@@ -1,0 +1,48 @@
+services:
+  frontend:
+    container_name: frontend
+    configs:
+      - httpd-config
+    networks:
+      - front-tier
+    image: netum/frontend
+  
+  backend:
+    build: .:/backend
+    command: cargo run
+    container_name: backend
+    image: netum/backend
+    ports:
+      - 8000:8000
+    networks:
+      - back-tier
+      - front-tier
+    environment:
+      - DATABASE_URL="psql://postres:postgres@postgres/postgres"
+
+  database:
+    container_name: database
+    image: postgres
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - back-tier
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+volumes:
+  db-data:
+    driver: flocker
+    driver_opts:
+      size: "10GiB"
+
+configs:
+  httpd-config:
+    external: true
+
+networks:
+  front-tier: {}
+  back-tier: {}
