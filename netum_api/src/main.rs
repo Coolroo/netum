@@ -2,11 +2,12 @@ use std::env;
 
 use log::info;
 use migration::MigratorTrait;
-use rocket::{ get, launch, routes };
-use sea_orm::{ ConnectOptions, Database, DatabaseConnection, DbErr };
-use serde::{ Deserialize, Serialize };
+use rocket::{get, launch, routes};
+use sea_orm::{ConnectOptions, Database, DatabaseConnection, DbErr};
+use serde::{Deserialize, Serialize};
 
-mod entities;
+mod database;
+mod routes;
 
 #[derive(Deserialize, Serialize)]
 struct Error {
@@ -24,8 +25,9 @@ pub async fn get_db() -> Result<DatabaseConnection, DbErr> {
             .max_connections(5)
             .sqlx_logging(true)
             .sqlx_logging_level(log::LevelFilter::Trace)
-            .clone()
-    ).await?;
+            .clone(),
+    )
+    .await?;
     info!("Beginning migrations...");
     migration::Migrator::up(&db, None).await?;
     Ok(db)
@@ -35,7 +37,7 @@ pub async fn get_db() -> Result<DatabaseConnection, DbErr> {
 async fn rocket() -> _ {
     let db = match get_db().await {
         Ok(db_connection) => db_connection,
-        Err(e) => panic!("Failed to connect to database: {}", e.to_string()),
+        Err(e) => panic!("Failed to connect to database: {:?}", e),
     };
 
     db.ping().await.expect("Failed to connect to database!");
