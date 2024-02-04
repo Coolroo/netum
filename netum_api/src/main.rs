@@ -38,10 +38,7 @@ async fn rocket() -> _ {
         Err(e) => panic!("Failed to connect to database: {}", e.to_string()),
     };
 
-    let can_reach_db = db.ping().await.is_ok();
-    if !can_reach_db {
-        panic!("Failed to connect to database!");
-    }
+    db.ping().await.expect("Failed to connect to database!");
 
     rocket::build().manage(db).mount("/", routes![index])
 }

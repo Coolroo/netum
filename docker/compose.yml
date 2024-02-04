@@ -1,15 +1,14 @@
 services:
-  frontend:
-    container_name: frontend
-    configs:
-      - httpd-config
-    networks:
-      - front-tier
-    image: netum/frontend
+  #frontend:
+    #container_name: frontend
+    #configs:
+    #   - httpd-config
+    # networks:
+    #   - front-tier
+    # image: netum/frontend
   
   backend:
     build: .:/backend
-    command: cargo run
     container_name: backend
     image: netum/backend
     ports:
@@ -18,7 +17,7 @@ services:
       - back-tier
       - front-tier
     environment:
-      - DATABASE_URL="psql://postres:postgres@postgres/postgres"
+      - DATABASE_URL=postgres://postgres:postgres@database:5432/postgres
 
   database:
     container_name: database
@@ -35,9 +34,6 @@ services:
 
 volumes:
   db-data:
-    driver: flocker
-    driver_opts:
-      size: "10GiB"
 
 configs:
   httpd-config:
