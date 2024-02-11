@@ -33,6 +33,8 @@ import {
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { usePathname } from 'next/navigation'
 import PaddedContent from './paddedcontent'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 const userNavigation = [
   { name: 'Your profile', href: '#' },
   { name: 'Sign out', href: '#' },
@@ -52,6 +54,12 @@ export default function PageLayout({children}: {children: React.ReactNode}) {
     { name: 'Books', href: '/books', icon: BookOpenIcon, current: pathname == "/books" },
     { name: 'Games', href: '/games', icon: PuzzlePieceIcon, current: pathname == "/games" },
   ];
+  
+  const { data: session} = useSession();
+
+  const signedIn = session != null;
+  
+  const user = session?.user;
 
   return (
     <section>
@@ -107,12 +115,13 @@ export default function PageLayout({children}: {children: React.ReactNode}) {
                   </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
-                    <div className="flex h-16 shrink-0 items-center">
-                      <img
-                        className="h-8 w-auto"
+                      <div className="h-8 w-8 relative">
+                        <Image
+                        layout="fill"
                         src="https://tailwindui.com/img/logos/mark.svg?color=white"
                         alt="Your Company"
-                      />
+                        />
+                      
                     </div>
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -156,11 +165,14 @@ export default function PageLayout({children}: {children: React.ReactNode}) {
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
             <div className="flex h-16 shrink-0 items-center">
-              <img
-                className="h-8 w-auto"
+              <div className="h-8 w-8 relative">
+              <Image
+                layout="fill"
                 src="https://tailwindui.com/img/logos/mark.svg?color=white"
                 alt="Your Company"
               />
+              </div>
+              
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -235,14 +247,23 @@ export default function PageLayout({children}: {children: React.ReactNode}) {
                 <Menu as="div" className="relative">
                   <Menu.Button className="-m-1.5 flex items-center p-1.5">
                     <span className="sr-only">Open user menu</span>
-                    <img
-                      className="h-8 w-8 rounded-full bg-gray-50"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      alt=""
-                    />
+                    
+                    {
+                      signedIn && user?.image ? <div className="h-8 w-8 rounded-full bg-gray-50">
+                      <Image
+                        layout="fill"
+                        src={user?.image}
+                        alt=""
+                      />
+                      </div> : <></>
+
+                    }
+                    
                     <span className="hidden lg:flex lg:items-center">
                       <span className="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
-                        Tom Cook
+                        {
+                          signedIn && user?.name ? user?.name : "Please Log In"
+                        }
                       </span>
                       <ChevronDownIcon className="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
                     </span>
