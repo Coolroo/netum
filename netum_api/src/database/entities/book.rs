@@ -10,9 +10,10 @@ pub struct Model {
     pub title: String,
     pub sub_title: Option<String>,
     pub authors: Vec<String>,
-    pub genre: String,
-    pub location: String,
+    pub categories: Vec<String>,
+    pub location: Option<String>,
     pub read: bool,
+    pub lent_to: Option<String>,
     pub description: Option<String>,
 }
 

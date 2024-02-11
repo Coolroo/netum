@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 chrono = "0.4.33"
 log = "0.4.20"
-reqwest = "0.11.24"
+reqwest = {version = "0.11.24", features=["json"]}
 rocket = {version = "0.5.0", features=["json", "uuid"]}
 sea-orm = {version = "0.12.12", features = ["sqlx-postgres", "runtime-tokio-rustls", "mock", "with-json", "with-uuid", "postgres-array", "with-chrono"]}
 serde = "1.0.196"
