@@ -249,7 +249,7 @@ export default function PageLayout({children}: {children: React.ReactNode}) {
                     <span className="sr-only">Open user menu</span>
                     
                     {
-                      signedIn && user?.image ? <div className="h-8 w-8 rounded-full bg-gray-50">
+                      signedIn && user?.image ? <div className="h-8 w-8 rounded-full bg-gray-50 relative">
                       <Image
                         layout="fill"
                         src={user?.image}
