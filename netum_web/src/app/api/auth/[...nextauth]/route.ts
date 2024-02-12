@@ -36,6 +36,17 @@ const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
   },
+  callbacks: {
+    session: async ({ session, token, user }) => {
+      if (!session?.user || !token?.account) {
+        return session;
+      }
+      session.user.name = token.name;
+      session.user.email = token.email;
+      session.user.image = token.picture;
+      return session;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);
