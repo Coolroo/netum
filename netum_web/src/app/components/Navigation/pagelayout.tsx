@@ -35,10 +35,6 @@ import { usePathname } from 'next/navigation'
 import PaddedContent from './paddedcontent'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-const userNavigation = [
-  { name: 'Your profile', href: '#' },
-  { name: 'Sign out', href: '#' },
-]
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -277,21 +273,19 @@ export default function PageLayout({children}: {children: React.ReactNode}) {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                      {userNavigation.map((item) => (
-                        <Menu.Item key={item.name}>
+                        <Menu.Item key="sessionButton">
                           {({ active }) => (
                             <a
-                              href={item.href}
-                              className={classNames(
-                                active ? 'bg-gray-50' : '',
-                                'block px-3 py-1 text-sm leading-6 text-gray-900'
-                              )}
+                            href={"/api/auth/sign" + (signedIn ? "out" : "in")}
+                            className={classNames(
+                              active ? 'bg-gray-50' : '',
+                              'block px-3 py-1 text-sm leading-6 text-gray-900'
+                            )}
                             >
-                              {item.name}
+                              {signedIn ? " Sign Out" : "Sign In"}
                             </a>
                           )}
                         </Menu.Item>
-                      ))}
                     </Menu.Items>
                   </Transition>
                 </Menu>
