@@ -248,16 +248,15 @@ export default function PageLayout({children}: {children: React.ReactNode}) {
                   <Menu.Button className="-m-1.5 flex items-center p-1.5">
                     <span className="sr-only">Open user menu</span>
                     
-                    {
-                      signedIn && user?.image ? <div className="h-8 w-8 rounded-full bg-gray-50 relative">
+                    <div className="h-8 w-8 rounded-full bg-gray-50 relative">
                       <Image
                         layout="fill"
-                        src={user?.image}
+                        src={signedIn && user?.image ? user?.image : "/images/empty_profile_pic.jpg"}
                         alt=""
+                        className="rounded-full"
                       />
-                      </div> : <></>
+                    </div>
 
-                    }
                     
                     <span className="hidden lg:flex lg:items-center">
                       <span className="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
