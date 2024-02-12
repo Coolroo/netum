@@ -8,7 +8,13 @@ const nextConfig = {
                 hostname: "tailwindui.com",
                 port: '',
                 pathname: "/img/**"
-            }
+            },
+            {
+                protocol: "https",
+                hostname: "*.googleusercontent.com",
+                port: "",
+                pathname: "**",
+              },
         ]
     }
 };
