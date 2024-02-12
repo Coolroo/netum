@@ -57,6 +57,8 @@ export default function PageLayout({children}: {children: React.ReactNode}) {
   
   const user = session?.user;
 
+  console.log(user);
+
   return (
     <section>
       {/*
