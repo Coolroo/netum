@@ -33,9 +33,6 @@ const authOptions: AuthOptions = {
       return verify(tokenStr, JWT_SECRET);
     },
   },
-  session: {
-    strategy: "jwt",
-  },
   callbacks: {
     session: async ({ session, token, user }) => {
       if (!session?.user || !token?.account) {
