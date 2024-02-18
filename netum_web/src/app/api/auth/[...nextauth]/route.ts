@@ -7,7 +7,7 @@ if (!JWT_SECRET) {
   throw new Error("Missing env.NEXTAUTH_SECRET");
 }
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
