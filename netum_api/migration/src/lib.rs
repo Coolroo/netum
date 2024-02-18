@@ -12,7 +12,7 @@ impl MigratorTrait for Migrator {
         vec![
             Box::new(m20220101_000001_create_table::Migration),
             Box::new(m20240204_174756_update_book::Migration),
-            Box::new(m20240218_175044_add_identifier_and_isbn_to_book::Migration),
+            Box::new(m20240218_175044_add_identifier_and_isbn_to_book::Migration)
         ]
     }
 }
