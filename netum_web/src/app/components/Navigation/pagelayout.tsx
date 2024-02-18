@@ -35,8 +35,6 @@ import { usePathname } from 'next/navigation'
 import PaddedContent from './paddedcontent'
 import { getSession, useSession } from 'next-auth/react'
 import Image from 'next/image'
-import { GET, authOptions } from '@/app/api/auth/[...nextauth]/route'
-import { getServerSession } from 'next-auth'
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
