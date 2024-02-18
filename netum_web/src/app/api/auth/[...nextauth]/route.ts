@@ -29,6 +29,8 @@ export const authOptions: AuthOptions = {
     },
     // @ts-expect-error
     decode: async ({ token: tokenStr }) => {
+      console.log("here");
+      console.log(tokenStr);
       if (!tokenStr) return null;
       return verify(tokenStr, JWT_SECRET);
     },
