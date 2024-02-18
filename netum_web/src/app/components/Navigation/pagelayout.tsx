@@ -34,7 +34,7 @@ import { usePathname } from 'next/navigation'
 import PaddedContent from './paddedcontent'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import { GET } from '@/app/api/auth/[...nextauth]/route'
+import { GET, authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { getServerSession } from 'next-auth'
 
 function classNames(...classes: string[]) {
@@ -52,7 +52,7 @@ export default async function PageLayout({children}: {children: React.ReactNode}
     { name: 'Games', href: '/games', icon: PuzzlePieceIcon, current: pathname == "/games" },
   ];
   
-  const session = await GET();
+  const session = await getServerSession(authOptions);
 
   const signedIn = session != null;
   
