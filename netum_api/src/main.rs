@@ -2,12 +2,13 @@ use std::env;
 
 use log::info;
 use migration::MigratorTrait;
-use rocket::{get, launch, routes};
-use sea_orm::{ConnectOptions, Database, DatabaseConnection, DbErr};
-use serde::{Deserialize, Serialize};
+use rocket::{ get, launch, routes };
+use sea_orm::{ ConnectOptions, Database, DatabaseConnection, DbErr };
+use serde::{ Deserialize, Serialize };
 
 mod database;
 mod routes;
+mod tables;
 
 #[derive(Deserialize, Serialize)]
 struct Error {
@@ -25,9 +26,8 @@ pub async fn get_db() -> Result<DatabaseConnection, DbErr> {
             .max_connections(5)
             .sqlx_logging(true)
             .sqlx_logging_level(log::LevelFilter::Trace)
-            .clone(),
-    )
-    .await?;
+            .clone()
+    ).await?;
     info!("Beginning migrations...");
     migration::Migrator::up(&db, None).await?;
     Ok(db)
@@ -42,5 +42,10 @@ async fn rocket() -> _ {
 
     db.ping().await.expect("Failed to connect to database!");
 
-    rocket::build().manage(db).mount("/", routes![index])
+    rocket
+        ::build()
+        .manage(db)
+        .mount("/", routes![index])
+        .mount("/books", routes![routes::books::create_with_isbn])
+        .mount("/location", routes![routes::books::create_location])
 }

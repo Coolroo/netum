@@ -10,18 +10,17 @@ impl MigrationTrait for Migration {
         manager.alter_table(
             Table::alter()
                 .table(Book::Table)
-                .modify_column(
-                    ColumnDef::new(Book::Genre)
-                        .array(ColumnType::String(None))
-                        .not_null()
-                        .default(Value::Array(ArrayType::String, Some(Box::new(vec![]))))
-                )
-                .rename_column(Book::Genre, Book::Categories)
-                .modify_column(ColumnDef::new(Book::Location).string())
+                .modify_column(ColumnDef::new(Book::Location).string().not_null())
                 .add_column(ColumnDef::new(Book::LentTo).string())
                 .add_column(ColumnDef::new(Book::CreatedAt).timestamp_with_time_zone().not_null())
                 .add_column(ColumnDef::new(Book::UpdatedAt).timestamp_with_time_zone().not_null())
                 .add_column(ColumnDef::new(Book::DeletedAt).timestamp_with_time_zone())
+                .to_owned()
+        ).await?;
+        manager.alter_table(
+            Table::alter()
+                .table(Book::Table)
+                .rename_column(Book::Genre, Book::Categories)
                 .to_owned()
         ).await
     }
@@ -31,8 +30,13 @@ impl MigrationTrait for Migration {
             Table::alter()
                 .table(Book::Table)
                 .modify_column(ColumnDef::new(Book::Categories).string().not_null())
-                .rename_column(Book::Categories, Book::Genre)
                 .drop_column(Book::LentTo)
+                .to_owned()
+        ).await?;
+        manager.alter_table(
+            Table::alter()
+                .table(Book::Table)
+                .rename_column(Book::Categories, Book::Genre)
                 .to_owned()
         ).await
     }

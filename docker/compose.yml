@@ -18,6 +18,7 @@ services:
       - front-tier
     environment:
       - DATABASE_URL=postgres://postgres:postgres@database:5432/postgres
+      - ROCKET_ADDRESS=0.0.0.0
 
   database:
     container_name: database
