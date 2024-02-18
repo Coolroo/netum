@@ -1,4 +1,3 @@
-"use client"
 /*
   This example requires some changes to your config:
   
@@ -35,12 +34,14 @@ import { usePathname } from 'next/navigation'
 import PaddedContent from './paddedcontent'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import { GET } from '@/app/api/auth/[...nextauth]/route'
+import { getServerSession } from 'next-auth'
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function PageLayout({children}: {children: React.ReactNode}) {
+export default async function PageLayout({children}: {children: React.ReactNode}) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const pathname = usePathname();
@@ -51,7 +52,7 @@ export default function PageLayout({children}: {children: React.ReactNode}) {
     { name: 'Games', href: '/games', icon: PuzzlePieceIcon, current: pathname == "/games" },
   ];
   
-  const { data: session} = useSession();
+  const { data: session } = await GET();
 
   const signedIn = session != null;
   
