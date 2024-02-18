@@ -39,32 +39,18 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  /*callbacks: {
-      jwt: async ({ token, user, account, profile }) => {
-        console.log("here");
-        console.log(token);
-        console.log(user);
-        const isSignIn = user ? true : false;
-        // Add auth_time to token on signin in
-        if (isSignIn) {
-          token.auth_time = Math.floor(Date.now() / 1000);
-        }
-        return Promise.resolve(token);
-      },
-      session: async ({ session, token, user }) => {
-        console.log("here2");
-        console.log(token);
-        console.log(session);
-        if (!session?.user || !token?.account) {
-          return session;
-        }
-  
-        session.user.id = token.sub;
-        session.user.name = token.name;
-        session.user.image = token.picture;
-        session.user.email = token.email;
+  callbacks: {
+    session: async ({ session, token, user }) => {
+      if (!session?.user || !token?.account) {
         return session;
-      },
-    },*/
+      }
+
+      session.user.id = token.sub;
+      session.user.name = token.name;
+      session.user.image = token.picture;
+      session.user.email = token.email;
+      return session;
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
 };
