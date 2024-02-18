@@ -52,7 +52,7 @@ export default async function PageLayout({children}: {children: React.ReactNode}
     { name: 'Games', href: '/games', icon: PuzzlePieceIcon, current: pathname == "/games" },
   ];
   
-  const { data: session } = await GET();
+  const session = await GET();
 
   const signedIn = session != null;
   
